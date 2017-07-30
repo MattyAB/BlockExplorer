@@ -42,5 +42,16 @@ namespace BlockExplorer
 
 			return b;
 		}
+		/**
+		Block toBlock()
+		{
+			Block b = new Block();
+			b.Header.Version = Convert.ToInt32(version);
+			b.Header.HashMerkleRoot = merkleroot;
+			b.Header.BlockTime = Utils.UnixTimeToDateTime(time);
+			b.Header.Bits = bits;
+			b.Header.Nonce = nonce;
+			return b;
+		}**/
 	}
 }
