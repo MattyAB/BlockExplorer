@@ -18,14 +18,14 @@ namespace NodeConnector
 		static void Main(string[] args)
 		{
 			XmlDocument PassXML = new XmlDocument();
-			PassXML.Load("PassStore.xml");
+			PassXML.Load(@"C:\Users\matth\onedrive\documents\visual studio 2017\Projects\BlockExplorer\BlockExplorer\PassStore.xml");
 
 			// Object for connecting to SQL database
-			SqlConnector SQC = new SqlConnector("192.168.1.146", "blockchain", PassXML["credentials"]["SQLCreds"]["username"].ToString(), PassXML["credentials"]["SQLCreds"]["password"].ToString());
+			SqlConnector SQC = new SqlConnector("192.168.1.146", "blockchain", PassXML["credentials"]["SQLCreds"]["username"].InnerText, PassXML["credentials"]["SQLCreds"]["password"].InnerText);
 
 			// Object for connecting to Bitcoin node
 			RPCClient RPCC = new RPCClient(
-				PassXML["credentials"]["SQLCreds"]["username"].ToString() + ":" + PassXML["credentials"]["SQLCreds"]["password"].ToString()
+				PassXML["credentials"]["RPCCreds"]["username"].InnerText + ":" + PassXML["credentials"]["RPCCreds"]["password"].InnerText
 				, "192.168.1.146", Network.Main);
 			height = RPCC.GetBlockCount();
 

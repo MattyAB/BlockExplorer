@@ -18,7 +18,6 @@ namespace BlockExplorer.Tests
 		{
 			// Object for connecting to Bitcoin node
 			RPCClient RPCC = new RPCClient("mattyab:N1ceMeme!", "192.168.1.146", Network.Main);
-			height = RPCC.GetBlockCount();
 
 			Block blck = RPCC.GetBlock(0);
 
