@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿using BlockExplorer;
+using MySql.Data.MySqlClient;
 using NBitcoin;
 using System;
 
@@ -31,7 +32,7 @@ namespace NodeConnector
 			return connection;
 		}
 
-		internal void InsertBlock(Block b, int height)
+		internal void InsertBlock(BlockS b)
 		{
 
 		}

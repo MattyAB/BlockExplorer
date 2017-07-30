@@ -12,7 +12,6 @@ namespace NodeConnector
 {
 	class Program
 	{
-		static MySqlConnection MSC;
 		static int height;
 
 		static void Main(string[] args)

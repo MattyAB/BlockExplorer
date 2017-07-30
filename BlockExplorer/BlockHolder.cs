@@ -20,10 +20,13 @@ namespace NodeConnector
 
 			Block SQLBlock = SQC.GetBlock(height);
 			Block RPCBlock = GetFromRPC();
+			Console.Write("Got RPC block " + height + ": ");
 
 			if(SQLBlock == null)
 			{
-				SQC.InsertBlock(RPCBlock, height);
+				Console.Write("Not on SQL! ");
+				SQC.InsertBlock(BlockS.toBlockS(RPCBlock, RPCC));
+				Console.WriteLine("Inserted.");
 			}
 		}
 
