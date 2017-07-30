@@ -42,8 +42,8 @@ namespace BlockExplorer
 
 			return b;
 		}
-		/**
-		Block toBlock()
+		
+		public Block toBlock()
 		{
 			Block b = new Block();
 			b.Header.Version = Convert.ToInt32(version);
@@ -52,6 +52,6 @@ namespace BlockExplorer
 			b.Header.Bits = bits;
 			b.Header.Nonce = nonce;
 			return b;
-		}**/
+		}
 	}
 }

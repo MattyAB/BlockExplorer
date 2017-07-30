@@ -24,7 +24,7 @@ namespace NodeConnector
 			MySqlConnection connection = new MySqlConnection(connectionString);
 			try
 			{
-				connection.Open();
+				//connection.Open();
 			}
 			catch (Exception e)
 			{
@@ -35,29 +35,33 @@ namespace NodeConnector
 
 		internal void InsertBlock(BlockS b)
 		{
+			connection.Open();
+
 			string query = "INSERT INTO block (" +
 				"height, hash, version, merkleroot, time, nonce, bits, " +
 				"size, strippedsize, weight, chainwork, nextblockhash, versionhex" +
 				") VALUES('" +
 				b.height + "', " +
-				"unhex('" + b.hash + "'), '" +
+				"'" + b.hash + "', '" +
 				b.version + "', " +
-				"unhex('" + b.merkleroot + "'), '" +
+				"'" + b.merkleroot + "', '" +
 				b.time + "', '" +
 				b.nonce + "', " +
-				"unhex('" + b.bits + "'), '" +
+				"'" + String.Format("{0:x}", b.bits) + "', '" +
 				b.size + "', '" +
 				b.strippedsize + "', '" +
 				b.weight + "', " +
-				"unhex('" + b.chainwork + "'), " +
-				"unhex('" + b.nextblockhash + "'), " +
-				"unhex('" + b.versionhex + "'));";
+				"'" + b.chainwork + "', " +
+				"'" + b.nextblockhash + "', " +
+				"'" + String.Format("{0:x}", b.versionhex) + "');";
 
-				//Create Command
-				MySqlCommand cmd = new MySqlCommand(query, connection);
-				//Execute the command
+			//Create Command
+			MySqlCommand cmd = new MySqlCommand(query, connection);
+			//Execute the command
 
-				 cmd.ExecuteReader();
+			cmd.ExecuteNonQuery();
+
+			connection.Close();
 		}
 
 		public Block GetBlock(int height)
@@ -68,35 +72,44 @@ namespace NodeConnector
 			MySqlCommand cmd = new MySqlCommand(query, connection);
 			//Create a data reader and Execute the command
 
-			MySqlDataReader dataReader = cmd.ExecuteReader();
+			//Create default block
+			Block block = default(Block);
 
-			//Read the data and store them in the Block
-			Block block = new Block();
-			while (dataReader.Read())
+			connection.Open();
+
+			using (MySqlDataReader dataReader = cmd.ExecuteReader())
 			{
-				BlockS b = new BlockS();
-				
-				b.height = Convert.ToInt32(dataReader.GetString("height"));
-				Console.WriteLine(ToHex(dataReader.GetString("hash")));
-				Console.WriteLine(dataReader.GetString("hash").Length);
-				var v = ToHex(dataReader.GetString("hash"));
-				b.hash = new uint256(ToHex(dataReader.GetString("hash")));
-				b.version = Convert.ToInt32(dataReader.GetString("version"));
-				b.merkleroot = new uint256(ToHex(dataReader.GetString("merkleroot")));
-				b.time = Convert.ToUInt32(dataReader.GetString("time"));
-				b.nonce = Convert.ToUInt32(dataReader.GetString("nonce"));
-				b.bits = Convert.ToUInt32(ToHex(dataReader.GetString("bits")));
-				b.size = Convert.ToUInt32(dataReader.GetString("size"));
-				b.strippedsize = Convert.ToUInt32(dataReader.GetString("strippedsize"));
-				b.weight = Convert.ToUInt32(dataReader.GetString("weight"));
-				b.chainwork = new uint256(ToHex(dataReader.GetString("chainwork")));
-				b.nextblockhash = new uint256(ToHex(dataReader.GetString("nextblockhash")));
-				b.versionhex = Convert.ToUInt32(ToHex(dataReader.GetString("versionhex")));
+
+				//Read the data and store them in the Block
+				while (dataReader.Read())
+				{
+					block = new Block();
+					BlockS b = new BlockS();
+
+					b.height = Convert.ToInt32(dataReader.GetString("height"));
+					b.hash = new uint256(dataReader.GetString("hash"));
+					b.version = Convert.ToInt32(dataReader.GetString("version"));
+					b.merkleroot = new uint256(dataReader.GetString("merkleroot"));
+					b.time = Convert.ToUInt32(dataReader.GetString("time"));
+					b.nonce = Convert.ToUInt32(dataReader.GetString("nonce"));
+					b.bits = uint.Parse(dataReader.GetString("bits"), System.Globalization.NumberStyles.HexNumber);
+					b.size = Convert.ToUInt32(dataReader.GetString("size"));
+					b.strippedsize = Convert.ToUInt32(dataReader.GetString("strippedsize"));
+					b.weight = Convert.ToUInt32(dataReader.GetString("weight"));
+					b.chainwork = new uint256(dataReader.GetString("chainwork"));
+					b.nextblockhash = new uint256(dataReader.GetString("nextblockhash"));
+					b.versionhex = uint.Parse(dataReader.GetString("versionhex"), System.Globalization.NumberStyles.HexNumber);
+
+					block = b.toBlock();
+				}
 			}
 
-			dataReader.Close();
+			connection.Close();
 
-			return null;
+			if (block == default(Block))
+				return null;
+			else
+				return block;
 		}
 
 		private String ToHex(String i_asciiText)
