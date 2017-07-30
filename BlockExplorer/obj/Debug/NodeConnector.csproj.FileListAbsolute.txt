@@ -1,0 +1,12 @@
+C:\Users\matth\OneDrive\Documents\Visual Studio 2017\Projects\BlockExplorer\BlockExplorer\bin\Debug\BlockExplorer.exe.config
+C:\Users\matth\OneDrive\Documents\Visual Studio 2017\Projects\BlockExplorer\BlockExplorer\bin\Debug\BlockExplorer.exe
+C:\Users\matth\OneDrive\Documents\Visual Studio 2017\Projects\BlockExplorer\BlockExplorer\bin\Debug\BlockExplorer.pdb
+C:\Users\matth\OneDrive\Documents\Visual Studio 2017\Projects\BlockExplorer\BlockExplorer\bin\Debug\MySql.Data.dll
+C:\Users\matth\OneDrive\Documents\Visual Studio 2017\Projects\BlockExplorer\BlockExplorer\bin\Debug\NBitcoin.dll
+C:\Users\matth\OneDrive\Documents\Visual Studio 2017\Projects\BlockExplorer\BlockExplorer\bin\Debug\Newtonsoft.Json.dll
+C:\Users\matth\OneDrive\Documents\Visual Studio 2017\Projects\BlockExplorer\BlockExplorer\bin\Debug\System.Runtime.InteropServices.RuntimeInformation.dll
+C:\Users\matth\OneDrive\Documents\Visual Studio 2017\Projects\BlockExplorer\BlockExplorer\bin\Debug\NBitcoin.xml
+C:\Users\matth\OneDrive\Documents\Visual Studio 2017\Projects\BlockExplorer\BlockExplorer\bin\Debug\Newtonsoft.Json.xml
+C:\Users\matth\OneDrive\Documents\Visual Studio 2017\Projects\BlockExplorer\BlockExplorer\obj\Debug\NodeConnector.csprojResolveAssemblyReference.cache
+C:\Users\matth\OneDrive\Documents\Visual Studio 2017\Projects\BlockExplorer\BlockExplorer\obj\Debug\BlockExplorer.exe
+C:\Users\matth\OneDrive\Documents\Visual Studio 2017\Projects\BlockExplorer\BlockExplorer\obj\Debug\BlockExplorer.pdb
