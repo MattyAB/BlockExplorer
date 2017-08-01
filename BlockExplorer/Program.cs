@@ -28,8 +28,15 @@ namespace NodeConnector
 				, "192.168.1.146", Network.Main);
 			height = RPCC.GetBlockCount();
 
-			// Iterate through every block so far since the genesis
-			for(int currentBlockHeight = 0; currentBlockHeight <= height; currentBlockHeight++)
+			int loc = getCommandLocation(args, "startpos");
+			int startPosition = 0; //by default, starts at 0
+			if (loc != 999)
+			{
+				startPosition = Convert.ToInt32(args[loc + 1]);
+			}
+
+			// Iterate through every block so far since the start location
+			for(int currentBlockHeight = startPosition; currentBlockHeight <= height; currentBlockHeight++)
 			{
 				BlockHolder b = new BlockHolder(currentBlockHeight, SQC, RPCC);
 			}
@@ -37,9 +44,11 @@ namespace NodeConnector
 			Console.ReadLine();
 		}
 
-		int getCommandLocation(string[] args, string command)
+		static int getCommandLocation(string[] args, string command)
 		{
 			int location = 999; //reader understands this as a command not existing in the args.
+
+			command = "-" + command;
 
 			for (int i = 0; i < args.Length; i++)
 			{
