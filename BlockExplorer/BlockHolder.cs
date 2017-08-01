@@ -8,7 +8,9 @@ namespace NodeConnector
 {
 	internal class BlockHolder
 	{
-		int height;
+		public int height;
+		public bool wasOnSQL = true;
+		public uint256 hash;
 		SqlConnector SQC;
 		RPCClient RPCC;
 
@@ -20,13 +22,16 @@ namespace NodeConnector
 
 			Block SQLBlock = SQC.GetBlock(height);
 			Block RPCBlock = GetFromRPC();
-			Console.Write("Got RPC block " + height + ": ");
+			//Console.Write("Got RPC block " + height + ": ");
+
+			hash = RPCBlock.GetHash();
 
 			if(SQLBlock == null)
 			{
-				Console.Write("Not on SQL! ");
+				wasOnSQL = false;
+				//Console.Write("Not on SQL! ");
 				SQC.InsertBlock(BlockS.toBlockS(RPCBlock, RPCC));
-				Console.WriteLine("Inserted.");
+				//Console.WriteLine("Inserted.");
 			}
 		}
 

@@ -16,6 +16,7 @@ namespace NodeConnector
 
 		static void Main(string[] args)
 		{
+			#region ConnectionCode
 			XmlDocument PassXML = new XmlDocument();
 			PassXML.Load(@"C:\Users\matth\onedrive\documents\visual studio 2017\Projects\BlockExplorer\BlockExplorer\PassStore.xml");
 
@@ -26,6 +27,8 @@ namespace NodeConnector
 			RPCClient RPCC = new RPCClient(
 				PassXML["credentials"]["RPCCreds"]["username"].InnerText + ":" + PassXML["credentials"]["RPCCreds"]["password"].InnerText
 				, "192.168.1.146", Network.Main);
+			#endregion
+
 			height = RPCC.GetBlockCount();
 
 			int loc = getCommandLocation(args, "startpos");
@@ -35,13 +38,39 @@ namespace NodeConnector
 				startPosition = Convert.ToInt32(args[loc + 1]);
 			}
 
+			List<DateTime> blockTimes = new List<DateTime>();
+
 			// Iterate through every block so far since the start location
 			for(int currentBlockHeight = startPosition; currentBlockHeight <= height; currentBlockHeight++)
 			{
+				blockTimes.Insert(0, DateTime.Now);
 				BlockHolder b = new BlockHolder(currentBlockHeight, SQC, RPCC);
+				if (blockTimes.Count >= 10)
+					blockTimes.RemoveAt(blockTimes.Count - 1);
+
+				displayStats(blockTimes, b);
 			}
-			Console.WriteLine(RPCC.GetBlockHash(1));
+
 			Console.ReadLine();
+		}
+
+		static void displayStats(List<DateTime> blockTimes, BlockHolder lastBlock)
+		{
+			TimeSpan timeSince = blockTimes[0].Subtract(blockTimes[blockTimes.Count - 1]);
+			int secondsPerBlock = Convert.ToInt32(Math.Round(timeSince.TotalSeconds / blockTimes.Count));
+
+			Console.Clear();
+
+			Console.WriteLine("Current Block: " + lastBlock.height);
+
+			if (lastBlock.wasOnSQL)
+				Console.WriteLine("Was on SQL!");
+			else
+				Console.WriteLine("Wasn't on SQL!");
+
+			Console.WriteLine("Current Block hash: " + lastBlock.hash.ToString());
+			
+			Console.WriteLine("Currently doing " + secondsPerBlock + " seconds / block");
 		}
 
 		static int getCommandLocation(string[] args, string command)
