@@ -36,5 +36,21 @@ namespace NodeConnector
 			Console.WriteLine(RPCC.GetBlockHash(1));
 			Console.ReadLine();
 		}
+
+		int getCommandLocation(string[] args, string command)
+		{
+			int location = 999; //reader understands this as a command not existing in the args.
+
+			for (int i = 0; i < args.Length; i++)
+			{
+				if(args[i] == command | "-" + args[i] == command)
+				{
+					location = i;
+					break;
+				}
+			}
+
+			return location;
+		}
 	}
 }
