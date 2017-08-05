@@ -57,7 +57,8 @@ namespace NodeConnector
 		static void displayStats(List<DateTime> blockTimes, BlockHolder lastBlock)
 		{
 			TimeSpan timeSince = blockTimes[0].Subtract(blockTimes[blockTimes.Count - 1]);
-			int secondsPerBlock = Convert.ToInt32(Math.Round(timeSince.TotalSeconds / blockTimes.Count));
+			//int secondsPerBlock = Convert.ToInt32(Math.Round(timeSince.TotalSeconds / blockTimes.Count));
+			double blocksPerSecond = blockTimes.Count / timeSince.TotalSeconds;
 
 			Console.Clear();
 
@@ -70,7 +71,7 @@ namespace NodeConnector
 
 			Console.WriteLine("Current Block hash: " + lastBlock.hash.ToString());
 			
-			Console.WriteLine("Currently doing " + secondsPerBlock + " seconds / block");
+			Console.WriteLine("Currently doing " + blocksPerSecond + " blocks / second");
 		}
 
 		static int getCommandLocation(string[] args, string command)
