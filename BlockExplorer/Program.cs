@@ -45,16 +45,17 @@ namespace NodeConnector
 			{
 				blockTimes.Insert(0, DateTime.Now);
 				BlockHolder b = new BlockHolder(currentBlockHeight, SQC, RPCC);
-				if (blockTimes.Count >= 10)
+				if (blockTimes.Count >= 10000)
 					blockTimes.RemoveAt(blockTimes.Count - 1);
 
-				displayStats(blockTimes, b);
+				if(b.height % 100 == 0)
+					displayStats(blockTimes, b, height);
 			}
 
 			Console.ReadLine();
 		}
 
-		static void displayStats(List<DateTime> blockTimes, BlockHolder lastBlock)
+		static void displayStats(List<DateTime> blockTimes, BlockHolder lastBlock, int height)
 		{
 			TimeSpan timeSince = blockTimes[0].Subtract(blockTimes[blockTimes.Count - 1]);
 			//int secondsPerBlock = Convert.ToInt32(Math.Round(timeSince.TotalSeconds / blockTimes.Count));
@@ -72,6 +73,9 @@ namespace NodeConnector
 			Console.WriteLine("Current Block hash: " + lastBlock.hash.ToString());
 			
 			Console.WriteLine("Currently doing " + blocksPerSecond + " blocks / second");
+
+			TimeSpan timeLeft = new TimeSpan(0, 0, Convert.ToInt32((height-lastBlock.height)/blocksPerSecond));
+			Console.WriteLine("Time until done: " + timeLeft.ToString(@"dd\.hh\:mm\:ss"));
 		}
 
 		static int getCommandLocation(string[] args, string command)
